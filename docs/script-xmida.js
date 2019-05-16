@@ -36,14 +36,19 @@ document.addEventListener("DOMContentLoaded", function(e) {
         .enter()
         .append('div')
         .attr('class', 'group-rows');
-
+ 
+      group
+        .append('text')
+        .attr("class", "labels")
+        .text(d => d.key)
+        
       group.selectAll('.block')
         .data(d => d.values)
         .enter()
         .append('div')
         .attr('class', 'block')
-        .style("width", 4 + "px")
-        .style("height", 4 + "px")
+        .style("width", 2 + "px")
+        .style("height", 12 + "px")
         .style('background-color', function(d){
           return colour(d.Sexe);
         })
@@ -70,11 +75,23 @@ document.addEventListener("DOMContentLoaded", function(e) {
       group
         .append('div')
         .style("width", "5px")
+        .style("height", "20px");
+        
+      legendValues = d3.set(data.map( function(d) { return d.Sexe } ) ).values()
 
-      group
-        .append('text')
-        .attr("class", "labels")
-        .text(d => d.key);
+      var legend = d3.select(".legend")
+          .attr('width', width + margin.left + margin.right)
+          .attr('height', height + margin.top + margin.bottom)
+          .attr("class", "legend-flex")
+          .selectAll(".legends")
+          .data(legendValues)
+          .enter()
+          .append("rect")
+          .attr("class", "legends")
+          .style("background-color", function (d) { return colour(d) })
+          .append('text')
+          .text(function (d, i) { return d })
+          .attr("class", "legend-text")
 
     });
 }(d3);
